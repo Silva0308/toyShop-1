@@ -11,6 +11,45 @@ public class Model implements ProgrammFunction{
 
     @Override
     public void changeWightChance() {
+        int idToy = Integer.parseInt(JOptionPane.showInputDialog(null,
+                "Введите Id игрушки для изменения веса: ",
+                "Изменение веса игрушки",
+                JOptionPane.INFORMATION_MESSAGE));
+        String str;
+        try {
+            File path = new File("TOYWAREHOUSE.txt");
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            ArrayList<String> priorityArray = new ArrayList<>();
+            while ((str = br.readLine()) != null) {
+                priorityArray.add(str);
+            }
+            br.close();
+
+            for (int j = 0; j < priorityArray.size(); j++) {
+                String[] secondArray = new String[4];
+                secondArray = priorityArray.get(j).split(";");
+                if (idToy == Integer.parseInt(secondArray[0])) {
+                    int weigthChance = Integer.parseInt(JOptionPane.showInputDialog(null,
+                            priorityArray.get(j) + "\nВведите новую величину веса в %: ",
+                            "Изменение веса игрушки",
+                            JOptionPane.INFORMATION_MESSAGE));
+                    String res = secondArray[0] + ";" + secondArray[1] + ";" + secondArray[2] + ";" + weigthChance;
+                    priorityArray.set(j, res);
+                }
+            }
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            for (int k = 0; k < priorityArray.size(); k++) {
+                bw.write(priorityArray.get(k));
+                bw.newLine();
+            }
+            bw.close();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
